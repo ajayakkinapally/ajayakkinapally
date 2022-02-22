@@ -1,0 +1,102 @@
+package com.insurence.management;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Date;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.insurence.management.model.Approvals;
+import com.insurence.management.model.Disapproved;
+import com.insurence.management.repository.ApprovalsRepository;
+import com.insurence.management.repository.ApprovedRepository;
+import com.insurence.management.repository.DisapprovedRepository;
+
+@SpringBootTest
+class Insurence1ApplicationTests {
+	@Autowired
+	ApprovalsRepository approvalsRepository;
+	@Autowired
+	ApprovedRepository approvedRepository;
+	@Autowired
+	DisapprovedRepository disapprovedRepository;
+	@Test
+	public void addApprovels() {
+		Approvals approvals = new Approvals();
+		approvals.setUserId(15);
+		approvals.setRequestId(8);
+		approvals.setPolicyId(10);
+		Date date = new Date();
+		approvals.setDate(date);
+		approvals.setStatus("pending");
+		approvals.setCustomerName("madhu");
+		approvalsRepository.save(approvals);
+		assertNotNull(approvalsRepository.findById(15).get());
+	}
+
+	@Test
+	public void AllApprovals() {
+		List<Approvals> list = approvalsRepository.findAll();
+		assertThat(list).size().isGreaterThan(0);
+	}
+
+	@Test
+	public void Approval() {
+		Approvals approvals = approvalsRepository.findById(15).get();
+		assertEquals(8, approvals.getRequestId());
+	}
+
+	@Test
+	public void addApproved() {
+		com.insurence.management.model.Approved approved=new com.insurence.management.model.Approved();
+		approved.setUserId(1);
+		approved.setPolicyId(10);
+		approved.setRequestId(2);
+		Date date = new Date();
+		approved.setDate(date);
+		approved.setStatus("Success");
+		approved.setCustomerName("madhu");
+		approvedRepository.save(approved);
+		assertNotNull(approvedRepository.findById(1).get());
+
+	}
+	@Test
+	public void AllApproved() {
+		List<com.insurence.management.model.Approved> list=approvedRepository.findAll();
+		assertThat(list).size().isGreaterThan(0);
+	}
+	@Test
+	public void Approved() {
+		com.insurence.management.model.Approved approved = approvedRepository.findById(1).get();
+		assertEquals(10,approved.getPolicyId());
+	}
+	@Test
+	public void adddisApproved() {
+		Disapproved disapproved=new Disapproved();
+		disapproved.setUserId(1);
+		disapproved.setPolicyId(10);
+		disapproved.setRequestId(2);
+		Date date = new Date();
+		disapproved.setDate(date);
+		disapproved.setStatus("Success");
+		disapproved.setCustomerName("madhu");
+		disapprovedRepository.save(disapproved);
+		assertNotNull(disapprovedRepository.findById(1).get());
+
+	}
+	@Test
+	public void AllDisapproved() {
+		List<Disapproved> list=disapprovedRepository.findAll();
+		assertThat(list).size().isGreaterThan(0);
+	}
+	@Test
+	public void Disapproved() {
+	Disapproved disapproved = disapprovedRepository.findById(1).get();
+		assertEquals(10,disapproved.getPolicyId());
+	}
+}
